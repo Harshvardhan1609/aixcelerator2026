@@ -73,7 +73,7 @@ OPEN_ROUTER_API = "sk-or-v1-your-actual-openrouter-api-key-here"
 Streamlit Cloud will automatically:
 1. **Provision Container**: Boot a clean Debian Linux environment.
 2. **Install Dependencies**: Run `pip install -r requirements.txt` (including `chromadb`, `plotly`, `pysqlite3-binary`, and `tiktoken`).
-3. **Auto-Initialize SQLite**: `auth_manager.py` creates `rag_portal.db` and seeds the demo account `student` / `sin2026`.
+3. **Auto-Initialize SQLite**: `auth_manager.py` initializes `rag_portal.db` schema for production user registration, chat threads, and custom instructions.
 4. **Auto-Ingest Knowledge Base**: `rag_engine.py` reads `knowledgebase/info.md`, chunks the curriculum tables and dates, generates 384-dimensional ONNX dense vectors, and stores them in ChromaDB.
 5. **Launch Application**: The portal is live with SSL (`https://...streamlit.app`)!
 
@@ -82,7 +82,7 @@ Streamlit Cloud will automatically:
 ## 🧪 Step 5: Verify Your Live App
 
 1. Visit your live Streamlit Cloud URL.
-2. Log in using the **1-Click Demo Login** button (or sign in with `student` / `sin2026`).
+2. Sign in with your registered account or click **"✨ Create New ID / Sign Up"** to create a new student ID.
 3. Try asking:
    - *"What is the duration, batch size, and practical approach?"*
    - *"Tell me about the 2-month internship phase."*

@@ -386,9 +386,8 @@ def render_auth_screen():
         st.caption('Please log in or register a new student ID to access the course counselling chat, 6-pillar lab, and custom instructions.')
         st.markdown('''
         <div style="background:rgba(143,0,0,0.2); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:12px; margin-top:10px;">
-            <div style="font-size:0.8rem; font-weight:700; color:#FCA5A5;">🔑 Quick Demo Credentials:</div>
-            <div style="font-size:0.75rem; color:#D1D5DB; margin-top:4px;">User ID: <code>student</code></div>
-            <div style="font-size:0.75rem; color:#D1D5DB;">Password: <code>sin2026</code></div>
+            <div style="font-size:0.8rem; font-weight:700; color:#FCA5A5;">🛡️ Production Security</div>
+            <div style="font-size:0.75rem; color:#D1D5DB; margin-top:4px;">Sign in with your registered Student ID or create a new account to enter.</div>
         </div>
         ''', unsafe_allow_html=True)
     st.markdown(f"""
@@ -418,7 +417,7 @@ def render_auth_screen():
 
         with auth_tab1:
             st.markdown("#### Access Your Student Portal")
-            login_u = st.text_input("User ID / Username:", placeholder="e.g. student or your user ID", key="login_u")
+            login_u = st.text_input("User ID / Username:", placeholder="e.g. your registered user ID", key="login_u")
             login_p = st.text_input("Password:", type="password", placeholder="Enter your password", key="login_p")
 
             if st.button("🚀 Log In to SIN Portal", use_container_width=True, key="btn_login"):
@@ -435,18 +434,7 @@ def render_auth_screen():
                 else:
                     st.error(msg)
 
-            st.markdown("---")
-            st.markdown("<p style='text-align:center; color:#9CA3AF; font-size:0.85rem;'>Looking for immediate access?</p>", unsafe_allow_html=True)
-            if st.button("⚡ Quick 1-Click Demo Login (Explore as @student)", use_container_width=True, key="btn_demo_login"):
-                ok, user_dict, _ = authenticate_user("student", "sin2026")
-                if ok and user_dict:
-                    st.session_state.authenticated_user = user_dict
-                    threads = get_user_threads(user_dict["username"])
-                    if threads:
-                        st.session_state.current_thread_id = threads[0]["thread_id"]
-                    else:
-                        st.session_state.current_thread_id = create_new_thread(user_dict["username"], "Welcome to AI Agent Xcelerator")
-                    st.rerun()
+            st.markdown("<p style='text-align:center; color:#9CA3AF; font-size:0.82rem; margin-top:16px;'>Don't have an ID yet? Click on the <strong>✨ Create New ID / Sign Up</strong> tab above.</p>", unsafe_allow_html=True)
 
         with auth_tab2:
             st.markdown("#### Create New Student Account")
@@ -699,6 +687,26 @@ def render_authenticated_portal(current_user):
                     st.success(f"Indexed {count} chunks successfully!")
         else:
             st.error("ChromaDB offline.")
+
+    # Top User Status & Quick Logout Navigation Bar
+    top_col1, top_col2 = st.columns([5, 1.2])
+    with top_col1:
+        st.markdown(
+            f"<div style='display:flex; align-items:center; gap:10px; margin-bottom:10px;'>"
+            f"<span style='font-size:0.85rem; color:#9CA3AF;'>Active Session:</span>"
+            f"<span style='font-size:0.92rem; font-weight:700; color:#FFFFFF;'>{current_user['full_name']}</span>"
+            f"<code style='color:#FCA5A5; background:rgba(143,0,0,0.35); border:1px solid rgba(239,68,68,0.4); padding:2px 8px; border-radius:6px; font-size:0.8rem;'>@{current_user['username']}</code>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+    with top_col2:
+        if st.button("🚪 Log Out", key="btn_top_logout", use_container_width=True, help="End your session and securely log out"):
+            st.session_state.authenticated_user = None
+            st.session_state.current_thread_id = None
+            st.session_state.messages = []
+            st.session_state.token_tracker.reset()
+            st.session_state.memory_engine.clear()
+            st.rerun()
 
     # Main Hero Header with Brand Guidelines & Colors
     st.markdown(f"""

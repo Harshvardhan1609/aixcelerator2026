@@ -69,26 +69,12 @@ def init_database():
     conn.commit()
     conn.close()
 
-def seed_demo_account():
-    """Seeds a pre-configured demo account for immediate 1-click evaluation."""
+def purge_demo_accounts():
+    """Removes demo accounts for production deployment."""
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT username FROM users WHERE username = 'student'")
-    if not cursor.fetchone():
-        pwd_hash, salt = hash_password("sin2026")
-        cursor.execute("""
-            INSERT INTO users (username, password_hash, salt, full_name, user_bio, response_pref, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (
-            "student",
-            pwd_hash,
-            salt,
-            "Demo Student (SIN Explorer)",
-            "Aspiring AI Agent developer interested in RAG and autonomous workflow systems.",
-            "Explain concepts with practical analogies and structured bullet points.",
-            time.time()
-        ))
-        conn.commit()
+    cursor.execute("DELETE FROM users WHERE username IN ('student', 'test_student_2026')")
+    conn.commit()
     conn.close()
 
 # ----------------------------------------------------------------------
@@ -301,6 +287,6 @@ def get_thread_messages(thread_id: str) -> List[Dict[str, Any]]:
         })
     return messages
 
-# Initialize tables and demo user on module load
+# Initialize tables and ensure production purity on module load
 init_database()
-seed_demo_account()
+purge_demo_accounts()

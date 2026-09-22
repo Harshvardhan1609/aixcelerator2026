@@ -38,7 +38,7 @@ A dedicated hands-on laboratory tab covering all 30+ terms across the 6 pillars 
 
 ### 4. 🔐 User Authentication & ID Creation
 - Secure user registration and login backed by persistent SQLite (`rag_portal.db`) with salted SHA-256 password hashing.
-- **1-Click Demo Login**: Pre-seeded demo student account (`student` / `sin2026`) for instant evaluation.
+- **Production Account Management**: Individual workspace, isolated chat histories, and custom instructions saved per Student ID.
 
 ---
 
@@ -143,13 +143,9 @@ Deploying this app to Streamlit Community Cloud takes less than 2 minutes:
 
 For detailed instructions and screenshots, see [`DEPLOYMENT.md`](DEPLOYMENT.md).
 
----
+## 🔐 Production Authentication & Access Control
 
-## 🔑 Demo Login Credentials
-
-For instant access without registering a new ID, use the 1-Click Demo button or enter:
-- **User ID**: `student`
-- **Password**: `sin2026`
+Anyone visiting the portal can click **"✨ Create New ID / Sign Up"** to create a dedicated student account. All session data, custom instructions, and conversation threads are securely stored in SQLite.
 
 ---
 
