@@ -18,7 +18,24 @@ POPULAR_FREE_MODELS = [
 DEFAULT_MODEL = "openrouter/free"
 
 def get_openrouter_api_key() -> str:
-    """Retrieve the OpenRouter API key from environment variables."""
+    """
+    Retrieve the OpenRouter API key.
+    Checks Streamlit Cloud secrets (st.secrets) first, then environment variables (.env).
+    """
+    # 1. Check Streamlit secrets (Streamlit Community Cloud production standard)
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and st.secrets:
+            if "OPEN_ROUTER_API" in st.secrets:
+                return str(st.secrets["OPEN_ROUTER_API"]).strip()
+            if "OPENROUTER_API_KEY" in st.secrets:
+                return str(st.secrets["OPENROUTER_API_KEY"]).strip()
+            if "OPEN_ROUTER_API_KEY" in st.secrets:
+                return str(st.secrets["OPEN_ROUTER_API_KEY"]).strip()
+    except Exception:
+        pass
+
+    # 2. Check local environment variables (.env)
     key = os.getenv("OPEN_ROUTER_API") or os.getenv("OPENROUTER_API_KEY") or os.getenv("OPEN_ROUTER_API_KEY")
     return key.strip() if key else ""
 

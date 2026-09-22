@@ -1,6 +1,15 @@
 import os
 import re
+import sys
 from typing import List, Dict, Any, Tuple
+
+# Linux / Streamlit Cloud SQLite compatibility shim
+try:
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass
+
 import chromadb
 from chromadb.utils import embedding_functions
 

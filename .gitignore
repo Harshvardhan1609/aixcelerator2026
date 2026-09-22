@@ -1,0 +1,36 @@
+# Environment & Secrets (NEVER commit real API keys to GitHub)
+.env
+.env.local
+.env.*
+!.env.example
+.streamlit/secrets.toml
+!.streamlit/secrets.toml.example
+
+# Python byte code & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Dynamic Databases & Caches (Auto-generated on container startup)
+chroma_db/
+rag_portal.db
+
+# Logs & Temporary files
+*.log
+scratch/
+.system_generated/
+
+# OS & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.gemini/
